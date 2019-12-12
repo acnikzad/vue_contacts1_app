@@ -8,7 +8,6 @@
       <p>Email: <input type="text" v-model="newContactEmail"></p>
       <p>Phone Number: <input type="text" v-model="newContactPhoneNumber"></p>
       <button v-on:click="addContact()">Add Contact</button>
-
     </div>
 
     <div v-for="contact in contacts">
@@ -23,7 +22,14 @@
       <div v-if="currentContact === contact">
         <p>Email: {{contact.email}}</p>
         <p>Phone Number: {{contact.phone_number}}</p>
+
+        <p>First Name:<input type="text" v-model="newContactFirstName"></p>
+        <p>Middle Name:<input type="text" v-model="newContactMiddleName"></p>
+        <p>Last Name: <input type="text" v-model="newContactLastName"></p>
+        <p>Email: <input type="text" v-model="newContactEmail"></p>
+        <p>Phone Number: <input type="text" v-model="newContactPhoneNumber"></p>
         <button v-on:click="updateContact(contact)">Update Contact</button>
+        <button v-on:click="destroyContact(contact)">Delete Contact</button>
       </div>
 
       <br>
@@ -112,6 +118,18 @@ export default {
         theContact.last_name = response.data.last_name;
         theContact.email = response.data.email;
         theContact.phone_number = response.data.phone_number;
+      });
+    },
+
+    destroyContact: function(theContact) {
+
+      console.log(theContact);
+
+      axios.delete(`/api/contacts/${theContact.id}`).then(response => {
+        console.log(response.data);
+        var index = this.contacts.indexOf(theContact);
+        console.log(index);
+        this.contacts.splice(index, 1);
       });
     }
   }
